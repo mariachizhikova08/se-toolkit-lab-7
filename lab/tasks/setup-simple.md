@@ -15,7 +15,7 @@
     - [1.5.2. Prepare the environment (on the VM)](#152-prepare-the-environment-on-the-vm)
     - [1.5.3. Start the services (on the VM)](#153-start-the-services-on-the-vm)
   - [1.6. Verify the deployment](#16-verify-the-deployment)
-  - [1.7. Set up the autochecker](#17-set-up-the-autochecker)
+  - [1.7. Set up `Qwen Code`](#17-set-up-qwen-code)
 
 ## 1. Required steps
 
@@ -23,6 +23,9 @@
 > This lab builds on the same tools and setup from Lab 4.
 > If you completed Lab 4, most tools are already installed.
 > The main changes are: a new repo, new environment variables, and cleaning up old containers.
+
+> [!NOTE]
+> This lab needs your university email, github alias, and VM IP in Autochecker bot <https://t.me/auchebot>. If you haven't entered, then do so. If you want to change something contact your TA.
 
 ### 1.1. Clean up Lab 4 (on your VM)
 
@@ -92,22 +95,26 @@ We refer to your fork as `fork` and to the original repo as `upstream` (выше
 
 1. Clone your fork to your local machine.
 
-2. Open the forked repo in `VS Code`.
+  ```terminal
+  git clone https://github.com/<your-github-username>/se-toolkit-lab-5
+  ```
 
-3. Go to `VS Code Terminal`, [check that the current directory is `se-toolkit-lab-5`](../../wiki/shell.md#check-the-current-directory-is-directory-name), and install `Python` dependencies:
+3. Open the forked repo in `VS Code`.
+
+4. Go to `VS Code Terminal`, [check that the current directory is `se-toolkit-lab-5`](../../wiki/shell.md#check-the-current-directory-is-directory-name), and install `Python` dependencies:
 
    ```terminal
    uv sync --dev
    ```
 
-4. Create the environment files:
+5. Create the environment files:
 
    ```terminal
    cp .env.example .env.secret
    cp .env.docker.example .env.docker.secret
    ```
 
-5. Configure the autochecker API credentials.
+6. Configure the autochecker API credentials.
 
    The ETL pipeline fetches data from the autochecker dashboard API.
    You need to set your credentials in both environment files.
@@ -184,7 +191,7 @@ We refer to your fork as `fork` and to the original repo as `upstream` (выше
    ```terminal
    ssh <vm-user>@<vm-ip>
    ```
-   e.g. ssh vladimir@10.93.1.1
+   e.g. ssh my-vm-user@10.93.1.1
 
    If unable, see [how to connect to vm](../../wiki/vm.md#connect-to-the-vm)
    
@@ -227,10 +234,15 @@ We refer to your fork as `fork` and to the original repo as `upstream` (выше
      AUTOCHECKER_EMAIL=<your-email>@innopolis.university
      AUTOCHECKER_PASSWORD=<your-github-username><your-telegram-alias>
      ```
+
+    Also set your API key, so that only authorized users can access it.
+    ```text
+    API_KEY=set-it-to-something-and-remember-it
+    ```
   
     Then save the edit by pressing `CTRL X` then type letter `y` and press `ENTER`. 
     
-    > It's a good idea to remember how to view and edit files with `nano` or another similar tool, it's a common operation.
+    > It is useful to remember how to view and edit files with `nano` or another similar tool, it's a common operation.
    
 
 #### 1.5.3. Start the services (on the VM)
@@ -288,7 +300,7 @@ We refer to your fork as `fork` and to the original repo as `upstream` (выше
 
    You should see the `Swagger UI` page with endpoints including `/pipeline/sync` and `/analytics/`.
 
-3. [Authorize in Swagger](../../wiki/swagger.md#authorize-in-swagger-ui) with `API_KEY` from `.env.docker.secret`.
+3. [Authorize in Swagger](../../wiki/swagger.md#authorize-in-swagger-ui) with `API_KEY` you have in `.env.docker.secret`.
 
    > You can check both the `API_KEY` and `caddy-port` by opening the env file on VM:
    > `nano .env.docker.secret`, then when done close it with `CLTR X`
@@ -297,14 +309,39 @@ We refer to your fork as `fork` and to the original repo as `upstream` (выше
 
    You should get an empty array `[]` — the database has no data yet.
 
-### 1.7. Set up the autochecker
+### 1.7 Set up Qwen Code
 
-> [!NOTE]
-> Skip this step if you already registered with the autochecker bot in Lab 4.
+`Qwen Code` is a coding agent we'll use to make your life easier. It works in Russia without VPN and has a free tier.
 
-1. Open in `Telegram`: <https://t.me/auchebot>.
-2. Start the bot and enter your email, github alias, and VM IP.
+1. Create an account in [Qwen Chat](https://chat.qwen.ai/?mode=register)
+2. Install `Qwen code` on your local machine.
+
+  Linux / macOS:
+  ```bash
+  curl -fsSL https://qwen-code-assets.oss-cn-hangzhou.aliyuncs.com/installation/install-qwen.sh | bash
+  ```
+  
+  Windows (Run as Administrator CMD):
+  ```cmd
+  curl -fsSL -o %TEMP%\install-qwen.bat https://qwen-code-assets.oss-cn-hangzhou.aliyuncs.com/installation/install-qwen.bat && %TEMP%\install-qwen.bat
+  ```
+  
+  > **Note**: It's recommended to restart your terminal after installation to ensure environment variables take effect.
+
+3. Now launch `Qwen code` in Terminal on your laptop:
+  ```terminal
+  qwen
+  ```
+  
+  And authenticate with your Qwen Chat OAuth option following the instructions.
+  
+  You can now ask it, for example:
+  ```
+  What is this lab supposed to teach me?
+  ```
+  
+  > **Note**: It is my personal preference to use terminal version of the agent, yet there are other ways to use it as an VS Code extension, read more here if interested: [AI coding agent setup](../../wiki/coding-agents.md)
 
 ----
 
-🎉 Congrats! You are done with the setup! Now the tasks should go smoothly.
+🎉 Congrats! You are done with the setup! Now the tasks should go smoothly. Go to [tasks](https://github.com/inno-se-toolkit/se-toolkit-lab-5/tree/main?tab=readme-ov-file#tasks).

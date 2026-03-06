@@ -60,8 +60,9 @@ In simple words, you should be able to say:
 
 ### Prerequisites
 
-1. Complete the [lab setup](./lab/tasks/setup-simple.md#lab-setup) ([full version](./lab/tasks/setup.md#lab-setup))
-2. Set up an [AI coding agent](./wiki/coding-agents.md#coding-agents)
+1. Complete the [lab setup](./lab/tasks/setup-simple.md#lab-setup)
+
+> **Note**: If this is the first lab you are attempting in this course, you need to do the [full version of the setup](./lab/tasks/setup.md#lab-setup)
 
 ### Required
 
