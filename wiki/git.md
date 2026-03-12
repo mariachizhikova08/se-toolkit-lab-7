@@ -12,8 +12,8 @@
   - [Commit message](#commit-message)
   - [`Conventional Commits`](#conventional-commits)
     - [Common commit message prefixes in `Conventional Commits`](#common-commit-message-prefixes-in-conventional-commits)
-- [`Git` branch](#git-branch)
-  - [`<branch>`](#branch)
+- [Branch](#branch)
+  - [`<branch>` placeholder](#branch-placeholder)
 - [Revision](#revision)
 - [How `Git` works - text](#how-git-works---text)
 - [How `Git` works - videos](#how-git-works---videos)
@@ -109,18 +109,27 @@ Docs:
 - `docs:` for documentation changes.
 - `refactor:` for code changes without behavior changes.
 
-## `Git` branch
+## Branch
 
-### `<branch>`
+A branch is an independent line of development. It lets you work on a feature or fix in isolation without affecting the `main` branch. Under the hood, a branch is a movable pointer to a [commit](#commit) — as you add new commits, the pointer advances.
 
-A [`Git` branch](#git-branch) name (without `<` and `>`).
+Branches are central to the [`GitHub flow`](#github-flow): you create a branch, commit changes to it, open a pull request, and merge it back into `main` when ready.
+
+Docs:
+
+- [Git Branching](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)
+
+### `<branch>` placeholder
+
+A branch name (without `<` and `>`).
 
 Alternatively, a `Git` branch.
 
 Examples:
 
 - `main`
-- `upstream/main`
+- `dev`
+- `upstream/dev`
 
 ## Revision
 
