@@ -1,19 +1,19 @@
-# `~/qwen-code-api/.env`
+# `qwen-code-api/.env.secret`
 
 <h2>Table of contents</h2>
 
-- [About `~/qwen-code-api/.env.secret`](#about-qwen-code-apienvsecret)
+- [About `qwen-code-api/.env.secret`](#about-qwen-code-apienvsecret)
 - [`QWEN_CODE_API_HOST_PORT`](#qwen_code_api_host_port)
 - [`QWEN_CODE_API_KEY`](#qwen_code_api_key)
 
-## About `~/qwen-code-api/.env.secret`
+## About `qwen-code-api/.env.secret`
 
-`~/qwen-code-api/.env` is a [`.env` file](./environments.md#env-file) that is on [your VM](./vm) and stores [environment variables](./environments.md#environment-variable) for the [`Qwen Code` API](./qwen-code-api.md#what-is-qwen-code-api) deployed there.
+`qwen-code-api/.env` is a [`.env` file](./environments.md#env-file) that is on [your VM](./vm) and stores [environment variables](./environments.md#environment-variable) for the [`Qwen Code` API](./qwen-code-api.md#what-is-qwen-code-api) deployed there.
 
-Default values: `~/qwen-code-api/.env.example`.
+Default values: `qwen-code-api/.env.example`.
 
 > [!NOTE]
-> The file `~/qwen-code-api/.env.secret` was added to `~/qwen-code-api/.gitignore` because you may specify there
+> The file `qwen-code-api/.env.secret` was added to `qwen-code-api/.gitignore` because you may specify there
 > [secrets](./environments.md#secrets) such as the [`QWEN_CODE_API_KEY`](#qwen_code_api_key).
 
 ## `QWEN_CODE_API_HOST_PORT`

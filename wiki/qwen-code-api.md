@@ -138,8 +138,8 @@ Complete these steps:
 
    Replace placeholders:
 
-   - `<qwen-code-api-host-port>` with the value of [`QWEN_CODE_API_HOST_PORT`](./qwen-code-api-dotenv-secret.md#qwen_code_api_host_port) from [`~/qwen-code-api/.env.secret` (REMOTE)](./qwen-code-api-dotenv-secret.md#about-qwen-code-apienvsecret)
-   - `<qwen-code-api-key>` with the value of [`QWEN_CODE_API_KEY`](./qwen-code-api-dotenv-secret.md#qwen_code_api_key) from [`~/qwen-code-api/.env.secret` (REMOTE)](./qwen-code-api-dotenv-secret.md#about-qwen-code-apienvsecret)
+   - `<qwen-code-api-host-port>` with the value of [`QWEN_CODE_API_HOST_PORT`](./qwen-code-api-dotenv-secret.md#qwen_code_api_host_port) from [`qwen-code-api/.env.secret` (REMOTE)](./qwen-code-api-dotenv-secret.md#about-qwen-code-apienvsecret)
+   - `<qwen-code-api-key>` with the value of [`QWEN_CODE_API_KEY`](./qwen-code-api-dotenv-secret.md#qwen_code_api_key) from [`qwen-code-api/.env.secret` (REMOTE)](./qwen-code-api-dotenv-secret.md#about-qwen-code-apienvsecret)
    - `<qwen-model>` with one of the [available models](./qwen-code.md#view-available-models)
 
 2. When you run it, the output should be similar to this:
