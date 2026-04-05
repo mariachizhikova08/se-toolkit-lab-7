@@ -56,6 +56,20 @@ class ApiLogsPage(BaseModel):
 
 async def fetch_items() -> list[ApiItem]:
     """Fetch the lab/task catalog from the autochecker API."""
+    import os
+    if os.getenv("USE_MOCK_DATA") == "true":
+        return [
+            ApiItem(
+               id=i,
+               type="lab",              # ← добавлено (обязательное поле)
+               title=f"Lab {i}",        # ← добавлено (вместо name)
+               lab=f"Module {i}",       # ← добавлено (обязательное поле)
+               score=100,
+               status="completed",
+               lab_number=i
+            )
+            for i in range(1, 21)
+        ]
     async with httpx.AsyncClient(timeout=60) as client:
         resp = await client.get(
             f"{settings.autochecker_api_url}/api/items",
@@ -67,6 +81,9 @@ async def fetch_items() -> list[ApiItem]:
 
 async def fetch_logs(since: datetime | None = None) -> list[ApiLog]:
     """Fetch check results from the autochecker API with pagination."""
+    import os
+    if os.getenv("USE_MOCK_DATA") == "true":
+        return []
     all_logs: list[ApiLog] = []
 
     async with httpx.AsyncClient(timeout=60) as client:

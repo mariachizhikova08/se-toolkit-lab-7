@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Bot entry point with --test mode support."""
+"""Bot entry point with --test mode and LLM intent routing."""
 import sys
 import asyncio
 import argparse
 from handlers.commands import (
-    handle_start, handle_help, handle_health, handle_labs, handle_scores, handle_unknown
+    handle_start, handle_help, handle_health, handle_labs, handle_scores, handle_text_message
 )
 from config import settings
 
@@ -28,7 +28,8 @@ def process_command(command: str, text: str = "") -> str:
     elif command == "/scores":
         return handle_scores(text)
     else:
-        return handle_unknown(f"{command} {text}".strip())
+        full_text = f"{command} {text}".strip() if text else command
+        return handle_text_message(full_text)
 
 def run_test_mode(command: str) -> int:
     """Test mode: call handler directly, print result, exit."""
@@ -40,18 +41,27 @@ def run_test_mode(command: str) -> int:
     return 0
 
 async def run_telegram_bot():
-    """Real Telegram bot using aiogram."""
+    """Real Telegram bot using aiogram with inline buttons."""
     if not settings.BOT_TOKEN:
         print("⚠️ BOT_TOKEN not set.", file=sys.stderr)
         return 1
     from aiogram import Bot, Dispatcher, types
     from aiogram.filters import Command
+    from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+    
     bot = Bot(token=settings.BOT_TOKEN)
     dp = Dispatcher()
     
+    def get_start_keyboard() -> InlineKeyboardMarkup:
+        return InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="📋 List labs", callback_data="cmd_labs")],
+            [InlineKeyboardButton(text="📊 Lab scores", callback_data="cmd_scores")],
+            [InlineKeyboardButton(text="🏆 Top students", callback_data="cmd_top")],
+        ])
+    
     @dp.message(Command("start"))
     async def cmd_start(message: types.Message):
-        await message.answer(handle_start())
+        await message.answer(handle_start(), reply_markup=get_start_keyboard())
     
     @dp.message(Command("help"))
     async def cmd_help(message: types.Message):
@@ -71,21 +81,32 @@ async def run_telegram_bot():
         query = args[1] if len(args) > 1 else ""
         await message.answer(handle_scores(query))
     
+    @dp.callback_query(lambda c: c.data.startswith("cmd_"))
+    async def handle_callback(callback: types.CallbackQuery):
+        cmd = callback.data.replace("cmd_", "")
+        if cmd == "labs":
+            await callback.message.edit_text(handle_labs(), reply_markup=get_start_keyboard())
+        elif cmd == "scores":
+            await callback.message.answer("🔍 Which lab? Example: lab-04")
+        elif cmd == "top":
+            await callback.message.answer("🏆 Top students for which lab? Example: lab-04")
+        await callback.answer()
+    
     @dp.message()
-    async def handle_other(message: types.Message):
+    async def handle_free_text(message: types.Message):
         text = message.text or ""
         if text.startswith("/"):
-            cmd = text.split()[0]
-            response = handle_unknown(cmd)
+            response = handle_text_message(text)
         else:
-            response = handle_unknown(text)
+            response = handle_text_message(text)
         await message.answer(response)
     
+    print(f"🤖 Bot started with LLM intent routing!")
     await dp.start_polling(bot)
     return 0
 
 def main():
-    parser = argparse.ArgumentParser(description="LMS Telegram Bot")
+    parser = argparse.ArgumentParser(description="LMS Telegram Bot with LLM routing")
     parser.add_argument("--test", type=str, help="Test mode: run command and print result")
     args = parser.parse_args()
     

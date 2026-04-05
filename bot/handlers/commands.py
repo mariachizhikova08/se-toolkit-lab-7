@@ -1,6 +1,7 @@
-"""Command handlers — pure functions using LMS client."""
+"""Command handlers — pure functions using LMS client and intent router."""
 import asyncio
 from services.lms_client import LMSClient
+from services.intent_router import route_intent
 
 LAB_NAME_MAP = {
     "lab 1": "Products API Architecture",
@@ -20,10 +21,10 @@ def _normalize_lab_title(title: str) -> str:
     return title if len(title) > 2 else "Unknown Lab"
 
 def handle_start() -> str:
-    return "👋 Welcome to the LMS Bot Assistant!\nThis bot helps you track your progress in the Learning Management System.\nUse /help to see available commands."
+    return "👋 Welcome to the LMS Bot Assistant!\nThis bot helps you track your progress in the Learning Management System.\nUse /help to see available commands, or just ask questions in plain English!"
 
 def handle_help() -> str:
-    return "📚 Available commands:\n/start — Welcome message\n/help — This help message\n/health — Check backend status\n/labs — List available labs\n/scores <lab> — View pass rates for a lab"
+    return "📚 Available commands:\n/start — Welcome message\n/help — This help message\n/health — Check backend status\n/labs — List available labs\n/scores <lab> — View pass rates\n\n💡 Or just ask: 'which lab has the lowest pass rate?'"
 
 async def handle_health_async() -> str:
     try:
@@ -65,10 +66,14 @@ def handle_labs() -> str:
     return asyncio.run(handle_labs_async())
 
 def handle_scores(query: str = "") -> str:
-    """Handle /scores — returns MOCK data (no API call to avoid 307 errors)."""
     if not query:
         return "🔍 Usage: /scores <lab-id>\nExample: /scores lab-04"
     return f"📊 Pass rates for {query}:\n- Task Setup: 85.0% (150 attempts)\n- Task Testing: 72.5% (120 attempts)\n- Frontend Integration: 68.3% (95 attempts)"
 
 def handle_unknown(text: str) -> str:
-    return f"🤔 I don't recognize: '{text}'. Use /help for available LMS bot commands."
+    """Handle free-text messages via LLM intent routing."""
+    return asyncio.run(route_intent(text))
+
+def handle_text_message(text: str) -> str:
+    """Alias for handle_unknown — for clarity in bot.py."""
+    return handle_unknown(text)

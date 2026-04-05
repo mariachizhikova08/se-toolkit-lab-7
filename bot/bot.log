@@ -1,1 +1,19 @@
 nohup: ignoring input
+Failed to fetch updates - TelegramServerError: Telegram server says - Bad Gateway
+Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8417259642)
+Failed to fetch updates - TelegramServerError: Telegram server says - Bad Gateway
+Sleep for 1.417377 seconds and try again... (tryings = 1, bot id = 8417259642)
+Failed to fetch updates - TelegramRetryAfter: Telegram server says - Flood control exceeded on method 'GetUpdates'. Retry in 5 seconds.
+Original description: Too Many Requests: retry after 5
+(background on this error at: https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this)
+Sleep for 1.000000 seconds and try again... (tryings = 0, bot id = 8417259642)
+Failed to fetch updates - TelegramRetryAfter: Telegram server says - Flood control exceeded on method 'GetUpdates'. Retry in 5 seconds.
+Original description: Too Many Requests: retry after 5
+(background on this error at: https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this)
+Sleep for 1.234437 seconds and try again... (tryings = 1, bot id = 8417259642)
+Failed to fetch updates - TelegramRetryAfter: Telegram server says - Flood control exceeded on method 'GetUpdates'. Retry in 5 seconds.
+Original description: Too Many Requests: retry after 5
+(background on this error at: https://core.telegram.org/bots/faq#my-bot-is-hitting-limits-how-do-i-avoid-this)
+Sleep for 1.650946 seconds and try again... (tryings = 2, bot id = 8417259642)
+Failed to fetch updates - TelegramServerError: Telegram server says - Bad Gateway
+Sleep for 2.226909 seconds and try again... (tryings = 3, bot id = 8417259642)
