@@ -10,9 +10,9 @@ if env_path.exists():
 
 class Settings:
     BOT_TOKEN: str = os.getenv("BOT_TOKEN", "")
-    LMS_API_BASE_URL: str = os.getenv("LMS_API_BASE_URL", "http://localhost:42002")
+    LMS_API_BASE_URL: str = os.getenv("LMS_API_BASE_URL", "http://127.0.0.1:42001")
     LMS_API_KEY: str = os.getenv("LMS_API_KEY", "lab7-secret-key-2026")
     LLM_API_KEY: str = os.getenv("LLM_API_KEY", "")
-    LLM_API_BASE_URL: str = os.getenv("LLM_API_BASE_URL", "http://localhost:42005/v1")
+    LLM_API_BASE_URL: str = os.getenv("LLM_API_BASE_URL", "http://10.93.25.242:42005/v1")
 
 settings = Settings()
