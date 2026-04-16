@@ -9,7 +9,7 @@ ARG REGISTRY_PREFIX=harbor.pg.innopolis.university/docker-hub-cache/
 FROM ${REGISTRY_PREFIX}astral/uv:python3.14-bookworm-slim AS builder
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
 
-# Omit development dependencies
+# Omit development dependencie
 ENV UV_NO_DEV=1
 
 # Disable Python downloads, because we want to use the system interpreter
