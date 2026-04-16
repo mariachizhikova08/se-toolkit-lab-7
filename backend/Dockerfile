@@ -2,7 +2,7 @@
 # Also see https://docs.astral.sh/uv/guides/integration/docker/
 
 # ---
-# Stage 1: build the application in the `/app` directory.
+# Stage 1: build the application in the `/app` director
 # ---
 
 ARG REGISTRY_PREFIX=harbor.pg.innopolis.university/docker-hub-cache/
