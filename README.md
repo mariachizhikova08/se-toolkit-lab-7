@@ -95,3 +95,42 @@ By the end of this lab, you should be able to say:
 ### Optional
 
 1. [Flutter Web Chatbot](./lab/tasks/optional/task-1.md)
+
+## Deploy
+
+### Prerequisites
+
+Ensure you have the following environment variables in `.env.docker.secret`:
+
+- `BOT_TOKEN` — Telegram bot token
+- `LLM_API_KEY` — API key for LLM
+- `LLM_API_BASE_URL` — LLM API endpoint (e.g., `http://qwen-code-api:8080/v1`)
+- `LLM_API_MODEL` — Model name (e.g., `qwen-coder`)
+- `LMS_API_KEY` — LMS backend API key
+
+### Start Services
+
+```terminal
+cd ~/se-toolkit-lab-7
+
+# Stop any background bot process
+pkill -f "bot.py" 2>/dev/null
+
+# Start all services including the bot
+docker compose --env-file .env.docker.secret up --build -d
+
+# Check status
+docker compose --env-file .env.docker.secret ps
+```
+
+### Verify
+
+```terminal
+# Check bot container is running
+docker compose --env-file .env.docker.secret ps bot
+
+# Check bot logs
+docker compose --env-file .env.docker.secret logs bot --tail 20
+```
+
+The bot should be accessible in Telegram. Send `/start` to verify.
