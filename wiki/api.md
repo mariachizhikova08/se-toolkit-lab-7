@@ -8,6 +8,6 @@
 
 An API (`Application Programming Interface`) is a set of rules that lets programs communicate with each other.
 
-See:
+See
 
 - [Web API](./web-api.md#what-is-a-web-api).
