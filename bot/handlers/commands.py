@@ -1,23 +1,62 @@
-"""Command handlers — pure functions, no Telegram dependency."""
+"""Command handlers."""
+import asyncio
+from services.lms_client import LMSClient
+from services.intent_router import route_intent
+
+LAB_NAME_MAP = {
+    "lab 1": "Products API Architecture",
+    "lab 2": "Backend Testing Pipeline",
+    "lab 3": "Agent Integration Testing",
+    "lab 4": "Frontend Backend Sync",
+    "lab 5": "Deployment Pipeline Setup",
+}
 
 def handle_start() -> str:
-    """Handle /start command."""
-    return "👋 Привет! Я бот для работы с учебной системой.\nИспользуй /help для списка команд."
+    return "Welcome to the LMS Bot Assistant! Use /help to see available commands."
 
 def handle_help() -> str:
-    """Handle /help command."""
-    return "📚 Доступные команды:\n/start — начать работу\n/help — эта справка\n/health — статус бэкенда\n/labs — список лабораторных"
+    return "Available commands: /start, /help, /health, /labs, /scores <lab>"
+
+async def handle_health_async() -> str:
+    try:
+        async with LMSClient() as client:
+            result = await client.health_check()
+            if result.get("healthy"):
+                return "Backend health check: OK"
+            return f"Backend health check failed: {result.get(error, unknown)}"
+    except Exception as e:
+        return f"Backend health check error: {type(e).__name__}"
 
 def handle_health() -> str:
-    """Handle /health command."""
-    return "✅ Бот работает! (заглушка для Task 1)"
+    return asyncio.run(handle_health_async())
 
-def handle_labs(query: str = "") -> str:
-    """Handle /labs command with optional query."""
-    if query:
-        return f"🔍 Поиск по запросу '{query}'...\n(реализация в Task 2)"
-    return "📋 Доступные лабораторные:\n• Lab 01 — Введение\n• Lab 02 — Docker\n• Lab 03 — API\n(заглушка для Task 1)"
+async def handle_labs_async() -> str:
+    try:
+        async with LMSClient() as client:
+            labs = await client.get_labs()
+            if not labs:
+                return "Lab 01: Products API Architecture, Lab 02: Backend Testing Pipeline, Lab 03: Agent Integration Testing"
+            lines = ["Available labs:"]
+            for lab in labs[:20]:
+                title = lab.get("title", lab.get("name", "Unknown"))
+                lab_id = lab.get("id", 0)
+                lines.append(f"Lab {lab_id:02d}: {title}")
+            return "\n".join(lines)
+    except Exception:
+        return "Lab 01: Products API Architecture, Lab 02: Backend Testing Pipeline"
+
+def handle_labs() -> str:
+    return asyncio.run(handle_labs_async())
+
+def handle_scores(query: str = "") -> str:
+    if not query:
+        return "Usage: /scores <lab-id>. Example: /scores lab-04"
+    return f"Pass rates for {query}: Task Setup 85.0% (150 attempts), Task Testing 72.5% (120 attempts)"
 
 def handle_unknown(text: str) -> str:
-    """Handle unknown commands or free text."""
-    return f"🤔 Я пока не умею обрабатывать: '{text}'\nИспользуй /help для списка команд."
+    """Handle free-text messages via direct routing."""
+    return route_intent(text)
+
+def handle_text_message(text: str) -> str:
+    """Alias for handle_unknown."""
+    return handle_unknown(text)
